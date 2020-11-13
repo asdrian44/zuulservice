@@ -1,0 +1,9 @@
+zuul:
+  sensitiveHeaders:
+  host:
+    socketTimeoutMillis: 10000
+  routes:
+    product-service:
+      path: /product/**
+      serviceId: product-service
+
