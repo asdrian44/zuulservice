@@ -1,31 +1,24 @@
-package com.argo.gateway.User.domain;
+package com.argo.gateway.configuration.infrastructure.consumeApi.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
 
-@Entity(name = "user_details")
-public class UserDetails implements Serializable {
+public class UserDetailsDTO {
 
-    @Id
+
     private int idUser;
 
 
-    @OneToOne
-    @JoinColumn(name = "id_user",nullable = false)
-    @MapsId
-    private User userId;
 
 
-    @Column(name = "name",length = 100,nullable = false)
+
     private String name;
 
-    @Column(name = "last_name",length = 100,nullable = false)
+
     private String lastName;
 
-    @Column(name = "email",length = 100,nullable = false)
+
     private String email;
 
-    @Column(name = "phone",length = 100,nullable = false)
+
     private String cell;
 
 
@@ -69,11 +62,5 @@ public class UserDetails implements Serializable {
         this.idUser = idUser;
     }
 
-    public User getUserId() {
-        return userId;
-    }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
 }

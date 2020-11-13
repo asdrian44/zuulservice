@@ -1,10 +1,9 @@
 package com.argo.gateway.Utils;
 
-import com.argo.gateway.User.domain.User;
-import com.argo.gateway.User.domain.repositroy.IUser;
+import com.argo.gateway.configuration.infrastructure.consumeApi.dto.UserDTO;
+import com.argo.gateway.configuration.infrastructure.consumeApi.IUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +17,12 @@ public class UserUtil {
         this.iUser = iUser;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
 
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return this.iUser.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return this.iUser.getUser(username);
 
 
     }

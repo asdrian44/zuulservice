@@ -7,14 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,7 +36,7 @@ public class ServerConfigure extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().authorizeRequests().antMatchers("/oauth/token/**", "/roles/**", "/user/**").permitAll()
-                .antMatchers("/product/**").hasAnyRole("USER","ADMIN","EMPLOYEE")
+                .antMatchers("/product/**").hasAnyRole("USER", "ADMIN", "EMPLOYEE")
                 .anyRequest().authenticated().and().cors().configurationSource(corsconfiguration());
 
     }
@@ -83,7 +80,6 @@ public class ServerConfigure extends ResourceServerConfigurerAdapter {
         jwtAccessTokenConverter.setSigningKey(key);
         return jwtAccessTokenConverter;
     }
-
 
 
 }

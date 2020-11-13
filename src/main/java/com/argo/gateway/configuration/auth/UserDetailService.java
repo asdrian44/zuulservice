@@ -1,7 +1,7 @@
 package com.argo.gateway.configuration.auth;
 
-import com.argo.gateway.User.domain.User;
-import com.argo.gateway.User.domain.repositroy.IUser;
+import com.argo.gateway.configuration.infrastructure.consumeApi.dto.UserDTO;
+import com.argo.gateway.configuration.infrastructure.consumeApi.IUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
 public class UserDetailService implements UserDetailsService {
@@ -24,10 +23,10 @@ public class UserDetailService implements UserDetailsService {
 
 
 
-        Optional<User> optionalUser = iUser.findByUsername(s);
-        User user = optionalUser.get();
 
-        return new UserAuth(user.getUsername(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+user.getRoles().getRol().toString())));
+        UserDTO userDTO =iUser.getUser(s);
+
+        return new UserAuth(userDTO.getUsername(), userDTO.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+ userDTO.getRoles().getRol().toString())));
 
 
     }
