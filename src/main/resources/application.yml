@@ -11,5 +11,17 @@ eureka:
     serviceUrl:
      non-secure-port: 80
      secure-port: 443
-
+    fetch-registry: true
+    register-with-eureka: true
+spring:
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+  application:
+    name: gateway
 
