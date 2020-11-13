@@ -11,3 +11,4 @@ eureka:
     serviceUrl:
      non-secure-port: 80
      secure-port: 443
+
