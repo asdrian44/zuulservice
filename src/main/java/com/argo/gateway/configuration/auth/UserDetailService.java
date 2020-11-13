@@ -25,9 +25,7 @@ public class UserDetailService implements UserDetailsService {
 
 
         Optional<User> optionalUser = iUser.findByUsername(s);
-        User user = optionalUser.orElseThrow(() -> {
-            throw new RuntimeException("User not found");
-        });
+        User user = optionalUser.get();
 
         return new UserAuth(user.getUsername(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+user.getRoles().getRol().toString())));
 
