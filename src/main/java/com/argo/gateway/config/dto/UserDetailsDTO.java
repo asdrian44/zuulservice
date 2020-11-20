@@ -1,4 +1,4 @@
-package com.argo.gateway.configuration.infrastructure.consumeApi.dto;
+package com.argo.gateway.config.dto;
 
 
 public class UserDetailsDTO {

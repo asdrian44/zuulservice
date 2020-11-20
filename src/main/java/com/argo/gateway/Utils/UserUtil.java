@@ -1,7 +1,6 @@
 package com.argo.gateway.Utils;
 
-import com.argo.gateway.configuration.infrastructure.consumeApi.dto.UserDTO;
-import com.argo.gateway.configuration.infrastructure.consumeApi.IUser;
+import com.argo.gateway.config.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

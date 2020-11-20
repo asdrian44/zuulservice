@@ -25,3 +25,9 @@ spring:
   application:
     name: gateway
 
+oauth:
+  redirectUrl: https://zuul-services.herokuapp.com/oauth/token
+  clientId: 583458414138-ve02jfni5hat2f1aqs3lpol8kv8j229t.apps.googleusercontent.com
+  clientSecret: 60AXVP1AR8SF5WmYYPVgSCTf
+  checkTokenUrl: https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=
+  userInfoUrl: https://people.googleapis.com/v1/people/me?personFields=userDefined
