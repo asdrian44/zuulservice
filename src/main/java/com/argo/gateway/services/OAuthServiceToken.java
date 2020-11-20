@@ -16,7 +16,7 @@ public class OAuthServiceToken {
 
     private final String clientId = "583458414138-ve02jfni5hat2f1aqs3lpol8kv8j229t.apps.googleusercontent.com";
     private final String clientSecret = "60AXVP1AR8SF5WmYYPVgSCTf";
-    private final String redirectUrl = "http://localhost:4200/#/";
+    private final String redirectUrl = "http://localhost:4200";
     private final String URLTOKEN = "https://oauth2.googleapis.com/token";
 
 
