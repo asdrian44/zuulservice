@@ -1,10 +1,12 @@
 package com.argo.gateway.oauth;
 
 import com.argo.gateway.oauth.dto.responseAuthGoogle;
-import org.springframework.beans.factory.InitializingBean;
+import com.argo.gateway.rol.domain.repositroy.IRol;
+import com.commons.user.models.entity.user.domain.User;
+
+import com.argo.gateway.user.domain.repository.IUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,11 +24,10 @@ import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singleton;
@@ -35,16 +36,16 @@ import static java.util.Collections.singleton;
 public class GoogleTokenServices implements ResourceServerTokenServices {
 
 
+    private final AccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
+    private final String userEmailUrl = "https://people.googleapis.com/v1/people/me?personFields=emailAddresses";
+    @Autowired
+    @Qualifier("userRepo")
+    private IUser iUser;
+    @Autowired
+    private IRol iRol;
     private String userInfoUrl;
-
     @Autowired
     private RestTemplate restTemplate;
-
-
-    private final AccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
-
-
-
     @Autowired
     @Qualifier("google")
     private GoogleAccessTokenValidator googleAccessTokenValidator;
@@ -69,13 +70,48 @@ public class GoogleTokenServices implements ResourceServerTokenServices {
     }
 
     private Authentication getAuthenticationToken(String accessToken) {
-        System.out.println("entre aca3");
+
+        String idStr = getIdUser(accessToken);
+        System.out.println("Este es el id " + idStr);
+
+
+        String email = getEmail(accessToken);
+
+
+        User userSaved = this.iUser.findById(idStr).orElseGet(() -> {
+
+
+            User user = new User();
+            user.setEmail(email);
+            user.setIdUser(idStr);
+            user.setIdRol(this.iRol.getOne(1));
+            return this.iUser.save(user);
+        });
+        System.out.println(userSaved);
+
+
+        return new UsernamePasswordAuthenticationToken(new GooglePrincipal(new BigInteger(idStr)), null, singleton(new SimpleGrantedAuthority("ROLE_" + userSaved.getIdRol().getRol().name())));
+    }
+
+
+    private String getEmail(String accessToken) {
+
+        HttpHeaders headers = getHttpHeaders(accessToken);
+        Map map = restTemplate.exchange(userEmailUrl, HttpMethod.GET, new HttpEntity<>(headers), Map.class).getBody();
+
+        List emailAddresses = (List) map.get("emailAddresses");
+        Map<String, ?> data = (Map<String, ?>) emailAddresses.get(0);
+        return (String) data.get("value");
+
+    }
+
+    private String getIdUser(String accessToken) {
         Map<String, ?> userInfo = getUserInfo(accessToken);
         String idStr = ((String) userInfo.get("resourceName")).split("/")[1];
         if (idStr == null) {
             throw new InternalAuthenticationServiceException("Cannot get id from user info");
         }
-        return new UsernamePasswordAuthenticationToken(new GooglePrincipal(new BigInteger(idStr)), null, singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        return idStr;
     }
 
     private Map<String, ?> getUserInfo(String accessToken) {
@@ -84,6 +120,7 @@ public class GoogleTokenServices implements ResourceServerTokenServices {
         Map map = restTemplate.exchange(userInfoUrl, HttpMethod.GET, new HttpEntity<>(headers), Map.class).getBody();
         return (Map<String, Object>) map;
     }
+
 
     private HttpHeaders getHttpHeaders(String accessToken) {
         System.out.println("entre aca");

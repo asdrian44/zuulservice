@@ -1,14 +1,12 @@
 package com.argo.gateway.oauth;
 
 import com.argo.gateway.oauth.dto.responseAuthGoogle;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -47,7 +45,7 @@ public class GoogleAccessTokenValidator {
         System.out.println("aca3");
         Map<String, ?> response = getGoogleResponse(accessToken);
         boolean b = validateResponse(response);
-        return   new responseAuthGoogle(response,b);
+        return new responseAuthGoogle(response, b);
 
     }
 

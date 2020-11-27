@@ -26,7 +26,7 @@ spring:
     name: gateway
 
 oauth:
-  redirectUrl: http://localhost:4200
+  redirectUrl: http://localhost:7890/oauth/token
   clientId: 583458414138-ve02jfni5hat2f1aqs3lpol8kv8j229t.apps.googleusercontent.com
   clientSecret: 60AXVP1AR8SF5WmYYPVgSCTf
   checkTokenUrl: https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=
